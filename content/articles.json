@@ -1,0 +1,35 @@
+{
+  "generated": "2026-09-17T19:26:11.150Z",
+  "posts": [
+    {
+      "slug": "rest-vs-soap",
+      "title": "REST vs SOAP: the truce nobody asked for",
+      "date": "2026-09-17",
+      "summary": "One returns JSON and shrugs. The other returns an envelope and a lawyer. Here is when each actually earns its keep.",
+      "tags": [
+        "rest",
+        "soap",
+        "apis"
+      ],
+      "author": "Ahmed Fahim",
+      "readingTime": 3,
+      "draft": false,
+      "file": "2026-09-17-rest-vs-soap.md"
+    },
+    {
+      "slug": "idempotency-explained",
+      "title": "Idempotency, or how to stop apologising for retries",
+      "date": "2026-09-11",
+      "summary": "Your client retried. Twice. The customer now owns three sofas. Let us fix that with one header and a little discipline.",
+      "tags": [
+        "apis",
+        "reliability",
+        "integration-patterns"
+      ],
+      "author": "Ahmed Fahim",
+      "readingTime": 4,
+      "draft": false,
+      "file": "2026-09-11-idempotency-explained.md"
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+/* Code presentation. Deliberately dark in BOTH themes: a JSON payload or a
+   curl command should look the same wherever you read it, and the contrast is
+   better than any warm-tinted alternative. Loaded after the highlight.js
+   theme so these rules win. */
+
+.prose pre {
+  position: relative;
+  margin: 0 0 1.5em;
+  border-radius: var(--radius-sm);
+  background: #16120f;
+  border: 1px solid #2c2420;
+  overflow: hidden;
+}
+
+.prose pre code,
+.prose pre code.hljs {
+  display: block;
+  padding: 16px 18px;
+  overflow-x: auto;
+  background: transparent;
+  color: #e6ded8;
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 1.75;
+  tab-size: 2;
+}
+
+/* Inline code keeps the warm theme — it sits inside sentences, not apart
+   from them. */
+.prose :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: var(--accent-wash);
+  color: var(--accent-ink);
+  word-break: break-word;
+}
+
+.copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 4px 11px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: #cbbfb7;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease, background 0.15s ease;
+}
+
+.prose pre:hover .copy-btn,
+.copy-btn:focus-visible { opacity: 1; }
+
+.copy-btn:hover { background: rgba(255, 255, 255, 0.16); }
+
+.copy-btn.is-copied {
+  color: #b6e3a1;
+  border-color: rgba(182, 227, 161, 0.4);
+  opacity: 1;
+}
+
+/* Touch devices have no hover, so the button would otherwise be unreachable. */
+@media (hover: none) {
+  .copy-btn { opacity: 1; }
+}

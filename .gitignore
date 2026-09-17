@@ -1,0 +1,13 @@
+# Local tool permissions — machine-specific, not part of the blog
+.claude/
+
+# Windows / editor noise
+Thumbs.db
+desktop.ini
+.DS_Store
+*.swp
+.vscode/
+
+# Anything you are drafting but not ready to publish.
+# Drafts are readable by anyone once uploaded, so keep them local.
+content/posts/_drafts/

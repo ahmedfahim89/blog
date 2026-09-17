@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Publish · Integration Ninja</title>
+<script>
+(function () {
+  try {
+    var saved = localStorage.getItem('ninja-theme');
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.setAttribute('data-theme', saved || (prefersDark ? 'dark' : 'light'));
+  } catch (err) { /* storage blocked; the default theme stands */ }
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600&display=swap">
+<link rel="stylesheet" href="../assets/css/main.css">
+<style>
+  .tool { padding: 30px 0 10px; }
+  .tool h1 { font-size: 28px; margin-bottom: 6px; }
+  .lede { color: var(--text-soft); max-width: 62ch; margin: 0 0 24px; }
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    margin-bottom: 18px;
+  }
+  .drop {
+    border: 2px dashed var(--border-strong);
+    border-radius: var(--radius);
+    padding: 30px 20px;
+    text-align: center;
+    color: var(--text-soft);
+  }
+  .drop.is-over { border-color: var(--accent); background: var(--accent-wash); }
+  .btn {
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 999px;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .btn:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+  .btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+  .btn--ghost { background: transparent; color: var(--accent); }
+  .btn--ghost:hover { background: var(--accent-wash); color: var(--accent); }
+  table.results { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.results th, table.results td {
+    text-align: left;
+    padding: 9px 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  table.results th { color: var(--text-muted); font-weight: 500; font-size: 12.5px; }
+  .warn { color: #b5451f; font-size: 13px; }
+  [data-theme='dark'] .warn { color: #f0997b; }
+  .steps { color: var(--text-soft); font-size: 15px; padding-left: 1.2em; }
+  .steps li { margin-bottom: 6px; }
+  code { font-family: var(--font-mono); font-size: 13px; background: var(--surface-alt); padding: 2px 6px; border-radius: 6px; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header__inner shell">
+    <a class="brand" href="../index.html">
+      <span class="brand__mark" aria-hidden="true">I</span>
+      <span>
+        <span class="brand__title">Integration Ninja</span>
+        <span class="brand__tagline"></span>
+      </span>
+    </a>
+    <button type="button" class="theme-toggle" aria-label="Switch theme">☾</button>
+  </div>
+</header>
+
+<main class="shell tool">
+  <h1>Publish</h1>
+  <p class="lede">
+    Rebuilds <code>content/articles.json</code> from your Markdown files. Run it every time you add,
+    rename or remove a post. Works offline — nothing is uploaded anywhere.
+  </p>
+
+  <div class="panel">
+    <div class="drop" id="drop">
+      <p style="margin-top:0">Drop your <code>.md</code> files here, or pick the folder:</p>
+      <p>
+        <input type="file" id="folder" webkitdirectory directory multiple accept=".md">
+      </p>
+      <p style="font-size:13px;margin-bottom:0">Choose <code>content/posts</code>. Nothing leaves your machine.</p>
+    </div>
+  </div>
+
+  <div class="panel" id="results-panel" hidden>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px">
+      <strong id="summary"></strong>
+      <button type="button" class="btn" id="download">Download articles.json</button>
+    </div>
+    <table class="results">
+      <thead><tr><th>Title</th><th>Slug</th><th>Date</th><th>Read</th><th>State</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+
+  <div class="panel" id="next-panel" hidden>
+    <strong>Next</strong>
+    <ol class="steps">
+      <li>Save the downloaded file over <code>content/articles.json</code>.</li>
+      <li>Reload the blog through Live Server to check it.</li>
+      <li>Upload <code>content/</code> to Hostinger when you are happy.</li>
+    </ol>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer__inner shell">
+    <span>© <span class="footer-year"></span> <span class="footer-author"></span></span>
+    <span><a href="../index.html">Back to the blog</a></span>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/lib/frontmatter.js"></script>
+<script src="../assets/js/lib/format.js"></script>
+<script src="../assets/js/ui.js"></script>
+<script>
+(function ($) {
+  'use strict';
+
+  var index = null;
+
+  function readFile(file) {
+    return new Promise(function (resolve, reject) {
+      var reader = new FileReader();
+      reader.onload = function () {
+        resolve({ name: file.name, text: String(reader.result) });
+      };
+      reader.onerror = function () { reject(reader.error); };
+      reader.readAsText(file);
+    });
+  }
+
+  function markdownOnly(files) {
+    return Array.prototype.filter.call(files, function (file) {
+      return /\.md$/i.test(file.name);
+    });
+  }
+
+  function byDateDesc(a, b) {
+    return String(b.date || '').localeCompare(String(a.date || ''));
+  }
+
+  function render(entries) {
+    var $rows = $('#rows').empty();
+    var duplicates = {};
+    var problems = 0;
+
+    entries.forEach(function (entry) {
+      duplicates[entry.slug] = (duplicates[entry.slug] || 0) + 1;
+    });
+
+    entries.forEach(function (entry) {
+      var issues = [];
+      if (!entry.date) issues.push('no date');
+      if (duplicates[entry.slug] > 1) issues.push('duplicate slug');
+      if (entry.title === 'Untitled') issues.push('no title');
+      if (issues.length) problems += 1;
+
+      var $row = $('<tr></tr>');
+      $('<td></td>').text(entry.title).appendTo($row);
+      $('<td></td>').append($('<code></code>').text(entry.slug)).appendTo($row);
+      $('<td></td>').text(window.Fmt.date(entry.date) || '—').appendTo($row);
+      $('<td></td>').text(entry.readingTime + ' min').appendTo($row);
+      $('<td></td>')
+        .addClass(issues.length ? 'warn' : '')
+        .text(issues.length ? issues.join(', ') : entry.draft ? 'draft' : 'published')
+        .appendTo($row);
+      $rows.append($row);
+    });
+
+    var published = entries.filter(function (entry) { return !entry.draft; }).length;
+    $('#summary').text(
+      entries.length + ' file' + (entries.length === 1 ? '' : 's') + ' · ' +
+      published + ' published · ' + (entries.length - published) + ' draft' +
+      (problems ? ' · ' + problems + ' need attention' : '')
+    );
+
+    $('#results-panel, #next-panel').prop('hidden', false);
+  }
+
+  function build(files) {
+    var markdown = markdownOnly(files);
+
+    if (!markdown.length) {
+      $('#summary').text('No .md files found in that selection.');
+      $('#rows').empty();
+      $('#results-panel').prop('hidden', false);
+      $('#next-panel').prop('hidden', true);
+      return;
+    }
+
+    Promise.all(markdown.map(readFile)).then(function (loaded) {
+      var entries = loaded
+        .map(function (item) { return window.Frontmatter.buildEntry(item.text, item.name); })
+        .sort(byDateDesc);
+
+      index = { generated: new Date().toISOString(), posts: entries };
+      render(entries);
+    });
+  }
+
+  $(function () {
+    $('#folder').on('change', function () { build(this.files); });
+
+    $('#drop')
+      .on('dragover', function (event) {
+        event.preventDefault();
+        $(this).addClass('is-over');
+      })
+      .on('dragleave drop', function () { $(this).removeClass('is-over'); })
+      .on('drop', function (event) {
+        event.preventDefault();
+        build(event.originalEvent.dataTransfer.files);
+      });
+
+    $('#download').on('click', function () {
+      if (!index) return;
+      var blob = new Blob([JSON.stringify(index, null, 2)], { type: 'application/json' });
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement('a');
+      link.href = url;
+      link.download = 'articles.json';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    });
+  });
+})(jQuery);
+</script>
+
+</body>
+</html>

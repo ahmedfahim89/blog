@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Integration Ninja</title>
+<meta name="description" content="APIs, middleware and messaging explained simply, for integration engineers.">
+<script>
+/* Applied before paint so the page never flashes the wrong theme. */
+(function () {
+  try {
+    var saved = localStorage.getItem('ninja-theme');
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.setAttribute('data-theme', saved || (prefersDark ? 'dark' : 'light'));
+  } catch (err) { /* storage blocked; the default theme stands */ }
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600&display=swap">
+<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="site-header__inner shell">
+    <a class="brand" href="index.html">
+      <span class="brand__mark" aria-hidden="true">I</span>
+      <span>
+        <span class="brand__title">Integration Ninja</span>
+        <span class="brand__tagline"></span>
+      </span>
+    </a>
+    <button type="button" class="theme-toggle" aria-label="Switch theme">☾</button>
+  </div>
+</header>
+
+<main id="main" class="shell">
+  <h1 class="visually-hidden">Articles</h1>
+  <ul id="feed" class="feed">
+    <li class="state">Loading articles…</li>
+  </ul>
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer__inner shell">
+    <span>© <span class="footer-year"></span> <span class="footer-author"></span></span>
+    <span>Written for integration engineers who would like the docs to be shorter.</span>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/lib/frontmatter.js"></script>
+<script src="assets/js/lib/format.js"></script>
+<script src="assets/js/lib/store.js"></script>
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/home.js"></script>
+
+</body>
+</html>

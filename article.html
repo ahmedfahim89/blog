@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Article · Integration Ninja</title>
+<meta name="description" content="">
+<script>
+/* Applied before paint so the page never flashes the wrong theme. */
+(function () {
+  try {
+    var saved = localStorage.getItem('ninja-theme');
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.setAttribute('data-theme', saved || (prefersDark ? 'dark' : 'light'));
+  } catch (err) { /* storage blocked; the default theme stands */ }
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.2/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+<link rel="stylesheet" href="assets/css/main.css">
+<link rel="stylesheet" href="assets/css/code.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="site-header__inner shell">
+    <a class="brand" href="index.html">
+      <span class="brand__mark" aria-hidden="true">I</span>
+      <span>
+        <span class="brand__title">Integration Ninja</span>
+        <span class="brand__tagline"></span>
+      </span>
+    </a>
+    <button type="button" class="theme-toggle" aria-label="Switch theme">☾</button>
+  </div>
+</header>
+
+<main id="main" class="shell">
+  <article id="article" class="article">
+    <a class="back-link" href="index.html">← All articles</a>
+    <header class="article__header">
+      <p id="article-meta" class="meta"></p>
+      <h1 id="article-title" class="article__title">Loading…</h1>
+      <p id="article-summary" class="article__summary"></p>
+      <div id="article-tags"></div>
+    </header>
+    <div id="article-body" class="prose"></div>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer__inner shell">
+    <span>© <span class="footer-year"></span> <span class="footer-author"></span></span>
+    <span><a href="index.html">More articles</a></span>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/18.0.13/lib/marked.umd.min.js" integrity="sha512-kHavuYjOa82OKvUxD8j04s+kMIH84FmETnuIgj0yFyY9LWU10sXNwU54Iozpewat8VxAzH4aXiwTEZMRrpwfBw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.4.15/purify.min.js" integrity="sha512-jeyPlk6E7VcWU2QTRw5UAe4iKLrWOJkyLc4GkOAOey1tOeTyxfTzrCY7p84VSer8/lRON5p236RGVeTErze9fA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.2/highlight.min.js" integrity="sha512-VSPLUv/n1Bmn+4zoxBNwpuFAO3//79I0Aax/qHDx24R47vylPcc9PrHDCqlePwHnh3joiM7/YTQhcXyQAAxvPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/lib/frontmatter.js"></script>
+<script src="assets/js/lib/format.js"></script>
+<script src="assets/js/lib/markdown.js"></script>
+<script src="assets/js/lib/store.js"></script>
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/article.js"></script>
+
+</body>
+</html>
