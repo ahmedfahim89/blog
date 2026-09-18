@@ -5,5 +5,10 @@ window.SITE = {
   author: 'Ahmed Fahim',
   contentBase: 'content',
   postsPerPage: 8,
-  wordsPerMinute: 220
+  wordsPerMinute: 220,
+
+  /* The site follows the reader's clock: dark from darkFrom until darkUntil,
+     light the rest of the day. Both are local hours on a 24-hour clock. */
+  darkFrom: 18,
+  darkUntil: 6
 };
