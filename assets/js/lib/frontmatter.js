@@ -67,6 +67,26 @@
       .trim();
   }
 
+  /* The same unwrapping, but code survives: on a blog about APIs the terms a
+     reader will actually type — `Idempotency-Key`, `soap:Envelope` — live only
+     inside code fences, so deleting them would make search miss the best
+     matches. Only the fence markers and the language tag go.
+
+     Underscores are left alone here (unlike stripMarkdown) because in code they
+     are part of the identifier: `request_hash` must stay findable. */
+  function searchableText(body) {
+    return body
+      .replace(/^\s*```[^\n]*$/gm, ' ')
+      .replace(/`/g, ' ')
+      .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
+      .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+      .replace(/^\s{0,3}#{1,6}\s+/gm, '')
+      .replace(/^\s{0,3}>\s?/gm, '')
+      .replace(/[*~]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
   function readingTime(plainText) {
     var perMinute = (global.SITE && global.SITE.wordsPerMinute) || 220;
     var words = plainText ? plainText.split(/\s+/).length : 0;
@@ -98,6 +118,9 @@
       tags: data.tags || [],
       author: data.author || (global.SITE && global.SITE.author) || '',
       readingTime: readingTime(plain),
+      /* Kept in its original casing — snippets are displayed verbatim, and
+         lowercasing happens once at query time instead. */
+      searchText: searchableText(parsed.body),
       draft: data.draft === true,
       file: filename || ''
     };
@@ -106,6 +129,7 @@
   global.Frontmatter = {
     parse: parse,
     stripMarkdown: stripMarkdown,
+    searchableText: searchableText,
     readingTime: readingTime,
     slugify: slugify,
     buildEntry: buildEntry

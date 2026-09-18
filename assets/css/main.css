@@ -29,6 +29,9 @@
   --radius-lg: 20px;
   --measure: 68ch;
   --shell: 860px;
+  /* The article page only: wide enough for the reading column plus a TOC rail. */
+  --shell-wide: 1160px;
+  --toc-width: 240px;
 }
 
 [data-theme='dark'] {
@@ -55,6 +58,11 @@
 *::after { box-sizing: border-box; }
 
 html { -webkit-text-size-adjust: 100%; }
+
+/* The feed and the pager are hidden with the attribute rather than removed, so
+   a filtered-to-nothing list can come back. Their own display rules would
+   otherwise win. */
+[hidden] { display: none !important; }
 
 body {
   margin: 0;
@@ -120,6 +128,8 @@ img { max-width: 100%; height: auto; }
   margin: 0 auto;
   padding: 0 20px;
 }
+
+.shell--wide { max-width: var(--shell-wide); }
 
 /* ---------- Header ---------- */
 
@@ -198,12 +208,80 @@ img { max-width: 100%; height: auto; }
 
 .theme-toggle:active { transform: scale(0.96); }
 
+/* ---------- Filters ---------- */
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 12px 18px;
+  flex-wrap: wrap;
+  padding: 26px 0 0;
+}
+
+.search {
+  position: relative;
+  flex: 1 1 260px;
+}
+
+.search__input {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  padding: 10px 40px 10px 18px;
+}
+
+.search__input::placeholder { color: var(--text-muted); }
+
+.search__input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: var(--accent);
+}
+
+/* The browser's own search-cancel button is unstyleable and absent on Firefox,
+   so the page draws its own. */
+.search__input::-webkit-search-cancel-button { display: none; }
+
+.search__clear {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 19px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.search__clear:hover { background: var(--surface-alt); color: var(--accent); }
+
+.tagbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+}
+
+.result-count {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 14px 0 0;
+}
+
 /* ---------- Cards ---------- */
 
 .feed {
   display: grid;
   gap: 16px;
-  padding: 28px 0 8px;
+  padding: 16px 0 8px;
   margin: 0;
   list-style: none;
 }
@@ -235,6 +313,22 @@ img { max-width: 100%; height: auto; }
   margin: 8px 0 14px;
 }
 
+/* Shown instead of the summary when the match was in the body, so the card can
+   show the reader why it is a result at all. */
+.card__snippet {
+  color: var(--text-soft);
+  font-size: 14.5px;
+  font-style: italic;
+  margin: 8px 0 14px;
+}
+
+mark {
+  background: var(--mark-bg);
+  color: var(--mark-ink);
+  border-radius: 3px;
+  padding: 0 2px;
+}
+
 .meta {
   font-size: 12.5px;
   color: var(--text-muted);
@@ -254,6 +348,56 @@ img { max-width: 100%; height: auto; }
 }
 
 a.pill:hover { background: var(--accent); color: #fff; }
+
+button.pill {
+  font-family: var(--font-body);
+  line-height: inherit;
+  border: 0;
+  cursor: pointer;
+}
+
+button.pill:hover { background: var(--accent); color: #fff; }
+
+.pill.is-active {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* ---------- Pagination ---------- */
+
+.pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 22px 0 4px;
+}
+
+.pager__btn {
+  font-family: var(--font-body);
+  font-size: 14px;
+  min-width: 38px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text-soft);
+  cursor: pointer;
+}
+
+.pager__btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.pager__btn:disabled { opacity: 0.4; cursor: default; }
+
+.pager__btn.is-current {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  opacity: 1;
+}
 
 /* ---------- Article ---------- */
 
@@ -324,6 +468,93 @@ a.pill:hover { background: var(--accent); color: #fff; }
 
 .prose th { background: var(--surface-alt); font-weight: 600; }
 
+/* ---------- Table of contents ---------- */
+
+/* Below the two-column breakpoint this is a collapsed block, so a long contents
+   list cannot push the article itself off the first screen. */
+.toc {
+  margin: 0 0 26px;
+  padding: 2px 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-size: 14.5px;
+}
+
+.toc__summary {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--text);
+  padding: 10px 0;
+  cursor: pointer;
+}
+
+.toc__list {
+  list-style: none;
+  margin: 2px 0 12px;
+  padding: 0;
+}
+
+.toc__item--h3 .toc__link { padding-left: 30px; }
+
+.toc__link {
+  display: block;
+  padding: 5px 0 5px 14px;
+  color: var(--text-soft);
+  text-decoration: none;
+  border-left: 2px solid var(--border);
+}
+
+.toc__link:hover { color: var(--accent); }
+
+.toc__link.is-active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+}
+
+/* ---------- Newer / older ---------- */
+
+.prevnext {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 44px;
+  padding-top: 26px;
+  border-top: 1px solid var(--border);
+}
+
+.prevnext__link {
+  flex: 1 1 240px;
+  padding: 14px 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  text-decoration: none;
+  transition: border-color 0.16s ease;
+}
+
+.prevnext__link:hover { border-color: var(--border-strong); }
+
+/* Keeps "Older" on the right even when it is the only card there. */
+.prevnext__link--older { margin-left: auto; text-align: right; }
+
+.prevnext__label {
+  display: block;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.prevnext__title {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--text);
+}
+
+.prevnext__link:hover .prevnext__title { color: var(--accent); }
+
 /* ---------- States ---------- */
 
 .state {
@@ -347,6 +578,21 @@ a.pill:hover { background: var(--accent); color: #fff; }
 }
 
 .state__body { font-size: 15px; margin: 0 auto; max-width: 46ch; }
+
+.state__action { margin: 18px 0 0; }
+
+.btn-clear {
+  font-family: var(--font-body);
+  font-size: 14px;
+  padding: 8px 20px;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.btn-clear:hover { background: var(--accent); color: #fff; }
 
 .state code {
   font-family: var(--font-mono);
@@ -374,6 +620,49 @@ a.pill:hover { background: var(--accent); color: #fff; }
   justify-content: space-between;
 }
 
+/* ---------- Wide screens: the article grows a contents rail ---------- */
+
+@media (min-width: 1080px) {
+  .article-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--toc-width);
+    column-gap: 48px;
+  }
+
+  /* The back link and the header run the full width; the body and the rail
+     share the row below them. */
+  .article-layout > .back-link,
+  .article-layout > .article__header { grid-column: 1 / -1; }
+  .article-layout > .prose { grid-column: 1; grid-row: 3; }
+
+  .toc {
+    grid-column: 2;
+    grid-row: 3;
+    position: sticky;
+    top: 26px;
+    align-self: start;
+    max-height: calc(100vh - 52px);
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  /* Always open at this width, so the disclosure arrow would be a lie. */
+  .toc__summary {
+    list-style: none;
+    cursor: default;
+    font-size: 12.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .toc__summary::-webkit-details-marker { display: none; }
+  .toc__summary::marker { content: ''; }
+}
+
 /* ---------- Small screens ---------- */
 
 @media (max-width: 620px) {
@@ -383,9 +672,24 @@ a.pill:hover { background: var(--accent); color: #fff; }
   .site-header__inner { padding: 14px 16px; }
   .brand__tagline { display: none; }
   .shell { padding: 0 16px; }
+  .filters { flex-direction: column; align-items: stretch; gap: 12px; }
+  /* The flex-basis above is a width in the row layout but would become a height
+     here, stretching the input into a tall box. */
+  .search { flex: none; }
+  .pager { gap: 6px; }
+  .pager__btn { min-width: 34px; padding: 6px 11px; font-size: 13px; }
+  .prevnext__link { flex-basis: 100%; }
+}
+
+/* Anchor jumps from the contents list glide rather than teleport. Done in CSS
+   so the reduced-motion block below can switch it off. */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 26px;
 }
 
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
+  html { scroll-behavior: auto; }
   .card:hover, .brand:hover .brand__mark { transform: none; }
 }
