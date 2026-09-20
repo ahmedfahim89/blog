@@ -1,6 +1,22 @@
 {
-  "generated": "2026-09-18T10:34:18.662Z",
+  "generated": "2026-09-20T12:24:09.218Z",
   "posts": [
+    {
+      "slug": "esb-moved-the-spaghetti",
+      "title": "Your ESB did not remove the spaghetti, it moved it indoors",
+      "date": "2026-09-20",
+      "summary": "The before-and-after diagram is honest on the day you draw it. Here is what it stops telling you by month eighteen.",
+      "tags": [
+        "integration-patterns",
+        "apis",
+        "middleware"
+      ],
+      "author": "Ahmed Fahim",
+      "readingTime": 1,
+      "searchText": "Every ESB business case contains the same two diagrams. Before: fifteen boxes and a cat's cradle of arrows. After: fifteen boxes and one calm rectangle in the middle. The spaghetti moved, it did not vanish Imagine a company has: 🚗 CRM 🚕 Billing System 🚌 ERP 🏎️ Mobile App 🚚 Warehouse System Without proper integration, everyone starts talking directly to everyone. CRM → Billing CRM → ERP ERP → Warehouse Mobile → CRM Billing → ERP Soon your architecture looks like: A bowl of spaghetti designed by an angry developer. 😂 Then the ESB arrives: 👮 \"STOP!\" \"CRM, send your message here.\" \"ERP, I'll transform it.\" \"Billing, you'll receive it in your preferred format.\" The ESB can handle: 🔄 Routing 🔀 Transformation 📨 Message mediation ⚡ Protocol conversion 🚨 Error handling Shared fate, not single point of failure Saying that an ESB is a single point of failure is an oversimplification. Modern ESBs are typically clustered, so losing the entire platform is uncommon. The bigger risk is partial failure, which can be much harder to detect and troubleshoot. An ESB retrying into a backend that is not idempotent fires that retry from infrastructure the backend team does not operate.",
+      "draft": false,
+      "file": "2026-09-20-esb-moved-the-spaghetti.md"
+    },
     {
       "slug": "rest-vs-soap",
       "title": "REST vs SOAP: the truce nobody asked for",
