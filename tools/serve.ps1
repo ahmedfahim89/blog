@@ -90,14 +90,20 @@ try {
             $response.ContentLength64 = $bytes.Length
             # Always revalidate, so an edited article shows up on refresh.
             $response.Headers.Add('Cache-Control', 'no-cache')
-            $response.OutputStream.Write($bytes, 0, $bytes.Length)
+            # HEAD gets the headers only - HttpListener throws (and the server
+            # dies) if a body is written for it.
+            if ($request.HttpMethod -ne 'HEAD') {
+                $response.OutputStream.Write($bytes, 0, $bytes.Length)
+            }
             Write-Host ("  200  " + $request.Url.AbsolutePath) -ForegroundColor DarkGray
         } else {
             $body = [System.Text.Encoding]::UTF8.GetBytes('<h1>404</h1><p>Not found on the preview server.</p>')
             $response.StatusCode = 404
             $response.ContentType = 'text/html; charset=utf-8'
             $response.ContentLength64 = $body.Length
-            $response.OutputStream.Write($body, 0, $body.Length)
+            if ($request.HttpMethod -ne 'HEAD') {
+                $response.OutputStream.Write($body, 0, $body.Length)
+            }
             Write-Host ("  404  " + $request.Url.AbsolutePath) -ForegroundColor DarkYellow
         }
 
