@@ -129,7 +129,8 @@ those two `<script>` tags across.
 
 1. In hPanel, open **File Manager** and go to `public_html`.
 2. Upload everything in this folder except `tools/` and `README.md`:
-   - `index.html`, `article.html`
+   - `index.html`, `article.html`, `about.html`, `contact.html`, `privacy.html`
+   - `robots.txt`
    - `assets/`
    - `content/`
 3. Visit your domain. It should look exactly like the local preview.
@@ -151,6 +152,10 @@ files one at a time.
 ```
 index.html            Home page — the article list
 article.html          Single article view (?slug=...)
+about.html            About, Contact and Privacy — static pages, text in the HTML
+contact.html
+privacy.html
+robots.txt            Crawler rules for integration.ninja
 assets/css/main.css   Design system: colours, layout, light and dark themes
 assets/css/code.css   Code block styling (deliberately dark in both themes)
 assets/js/config.js   Site title, tagline, author, theme hours. Edit to rebrand.
