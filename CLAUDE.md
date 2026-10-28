@@ -100,13 +100,21 @@ Script tags are ordered by dependency at the bottom of each page (`config.js` an
 `lib/theme.js` are the exception — see below). Add a new module and you must add its
 `<script>` tag to **every** page that needs it, in the right position, by hand.
 
-There are three pages, and each loads its own hand-maintained subset:
+Each page loads its own hand-maintained subset:
 
 | Page | CDN | Local modules after jQuery |
 | --- | --- | --- |
 | `index.html` | jQuery | `frontmatter`, `format`, `store`, `search`, `ui`, `home` |
 | `article.html` | jQuery, marked, DOMPurify, highlight.js (+ its stylesheet) | `frontmatter`, `format`, `markdown`, `store`, `toc`, `ui`, `article` |
+| `about.html`, `contact.html`, `privacy.html` | jQuery | `ui` |
 | `tools/publish.html` | jQuery | `frontmatter`, `format`, `ui` (paths are `../assets/...`) |
+
+The About, Contact and Privacy pages are static on purpose: their text is in the HTML,
+so crawlers and AdSense reviewers can read it without running JavaScript. Every page's
+footer links to all three (`.site-footer__nav`, with `aria-current="page"` on the page
+itself) — a new page gets the same footer. `privacy.html` describes exactly what the site
+stores and which third parties a browser talks to; adding a CDN host, a cookie, a
+`localStorage` key or the AdSense script means updating it and its "Last updated" date.
 
 Shared logic belongs in `assets/js/lib/` and is reused by the site *and* `tools/`.
 Do not fork it. `publish.html` is a first-class consumer of `lib/`, not a throwaway
@@ -213,3 +221,6 @@ Upload everything except `tools/`, `README.md` and `CLAUDE.md` to `public_html`.
 updates usually only need `content/` re-uploaded (the new post plus the regenerated
 `articles.json`). `tools/` is local-only — harmless if uploaded, but sprint 4 adds an
 `.htaccess` rule blocking it.
+
+`robots.txt` sits at the root and must reach `public_html` too. The live `ads.txt` on
+the server is not in this repo; never overwrite or delete it when uploading.

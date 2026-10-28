@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About · Integration Ninja</title>
+<meta name="description" content="Who writes Integration Ninja, who it is for, and what it covers: APIs, middleware, messaging and integration patterns.">
+<!-- Render-blocking on purpose: the theme is resolved before paint, so the page
+     never flashes the wrong colours. If either file fails to load, the
+     data-theme="light" already on <html> stands. -->
+<script src="assets/js/config.js"></script>
+<script src="assets/js/lib/theme.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600&display=swap">
+<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="site-header__inner shell">
+    <a class="brand" href="index.html">
+      <span class="brand__mark" aria-hidden="true">I</span>
+      <span>
+        <span class="brand__title">Integration Ninja</span>
+        <span class="brand__tagline"></span>
+      </span>
+    </a>
+    <button type="button" class="theme-toggle" aria-label="Switch theme">☾</button>
+  </div>
+</header>
+
+<main id="main" class="shell">
+  <article class="article">
+    <a class="back-link" href="index.html">← All articles</a>
+    <header class="article__header">
+      <h1 class="article__title">About Integration Ninja</h1>
+      <p class="article__summary">A blog about the unglamorous parts of software that make two systems agree with each other.</p>
+    </header>
+
+    <div class="prose">
+      <h2>What this is</h2>
+      <p>Integration Ninja explains APIs, middleware and messaging in plain language. Most software
+        projects spend more time connecting systems than building them, yet the documentation for that
+        work tends to be either a vendor brochure or a 400-page specification. This blog sits in between:
+        one problem per article, explained with real requests, real failure modes and the trade-offs
+        nobody puts on the slide.</p>
+
+      <h2>What it covers</h2>
+      <ul>
+        <li><strong>APIs</strong> — REST and SOAP, contracts, versioning, error handling.</li>
+        <li><strong>Reliability</strong> — retries, timeouts, idempotency and what happens when the network shrugs.</li>
+        <li><strong>Middleware</strong> — ESBs, integration platforms and where the complexity really ends up.</li>
+        <li><strong>Messaging</strong> — queues, events and the guarantees they do and do not give you.</li>
+        <li><strong>Integration patterns</strong> — the recurring shapes behind most integration designs.</li>
+        <li><strong>Integration and AI</strong> — what changes when the client calling your API is a language model.</li>
+      </ul>
+
+      <h2>Who it is for</h2>
+      <p>Integration engineers, backend developers and architects who connect systems for a living, and
+        anyone who has inherited an integration and would like to understand it before changing it. The
+        articles assume you can read a JSON payload and an HTTP request; they do not assume you have read
+        the specification.</p>
+
+      <h2>Who writes it</h2>
+      <p>Integration Ninja is written by Ahmed Fahim, an integration engineer who designs and builds APIs,
+        middleware and messaging solutions. The articles come from that day-to-day work: the questions that
+        keep coming up in design reviews, and the mistakes that are cheaper to read about than to make.</p>
+      <p>Every article is written for this site. If you spot a mistake or something that has gone out of
+        date, please <a href="contact.html">tell me</a> and I will correct it.</p>
+
+      <h2>How often</h2>
+      <p>New articles are added regularly. Each one shows the date it was published, and the
+        <a href="index.html">home page</a> lists them newest first.</p>
+
+      <h2>Sister project</h2>
+      <p><a href="https://brainrush.integration.ninja/">BrainRush</a> is a free trivia quiz game in English
+        and Arabic, made by the same author and hosted on this domain.</p>
+
+      <h2>Ads</h2>
+      <p>Integration Ninja is free to read, with no sign-up. To help cover the hosting, the site may show
+        ads from Google AdSense. The <a href="privacy.html">privacy policy</a> explains what that means for
+        cookies and how to opt out.</p>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer__inner shell">
+    <span>© <span class="footer-year"></span> <span class="footer-author"></span></span>
+    <nav class="site-footer__nav" aria-label="Site">
+      <a href="about.html" aria-current="page">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="privacy.html">Privacy</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="assets/js/ui.js"></script>
+
+</body>
+</html>

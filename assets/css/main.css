@@ -620,6 +620,17 @@ button.pill:hover { background: var(--accent); color: #fff; }
   justify-content: space-between;
 }
 
+.site-footer__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+}
+
+.site-footer__nav [aria-current='page'] {
+  color: var(--text);
+  text-decoration: none;
+}
+
 /* ---------- Wide screens: the article grows a contents rail ---------- */
 
 @media (min-width: 1080px) {

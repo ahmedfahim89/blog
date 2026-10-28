@@ -1,0 +1,4 @@
+# Applies to integration.ninja only; brainrush.integration.ninja has its own.
+# A Sitemap: line is added when sitemap.xml exists (sprint 4).
+User-agent: *
+Allow: /
